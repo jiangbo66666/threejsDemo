@@ -8,7 +8,6 @@
     import * as THREE from "three"
     // scene, mesh，cubes 不做代理（不放在this中，不让vue监听），否则会报错
     const SCENE = new THREE.Scene()
-    let mesh = null
     let cubes = []
 
   export default {
