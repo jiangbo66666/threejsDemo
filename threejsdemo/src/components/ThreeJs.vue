@@ -6,9 +6,10 @@
   
   <script>
     import * as THREE from "three"
-    // scene, mesh 不做代理，否则会报错
+    // scene, mesh，cubes 不做代理（不放在this中，不让vue监听），否则会报错
     const SCENE = new THREE.Scene()
     let mesh = null
+    let cubes = []
 
   export default {
     name: 'threeDemo',
@@ -40,13 +41,18 @@
             // 设置透视相机
             this.camera = new THREE.PerspectiveCamera( 75, this.width / this.height, 0.1, 1000)
             // 设置相机的位置
-            this.camera.position.set( 200, 200, 200)
+            this.camera.position.set( 50, 50, 50)
             this.add(this.camera)
-            // 不能看向scene否则会导致scene与几何体的位置发生重叠
-            // this.camera.lookAt(SCENE.position);
 
-            this.addBox()
-
+            // 创建自定义的方形和材质
+            const geometry = new THREE.BoxGeometry(10,10,10)
+            cubes = [
+                this.addCubeMesh( geometry, 0x44aa88, 20),
+                this.addCubeMesh( geometry, 0x8844aa, 0),
+                this.addCubeMesh( geometry, 0xaa8844, -20),
+            ]
+            // 指定相机看向的方位
+            this.camera.lookAt(0,0,0);
             this.addLight()
             
             // 设置渲染器的属性
@@ -63,29 +69,30 @@
         add(obj) {
             SCENE.add(obj)
         },
-        // 创建网格（几何图形和材质的结合体）
-        addBox() {
-            const geometry = new THREE.BoxGeometry( 100, 100, 100)
-            const material = new THREE.MeshPhongMaterial({color:0xff0000})
-            mesh = new THREE.Mesh(geometry,material)
-            this.add(mesh)
-            // 将相机指向盒子的位置，不会出现错误
-            this.camera.lookAt(mesh.position);
+        // 创建自定义方形网格
+        addCubeMesh(geometry,color,x){
+            const material = new THREE.MeshPhongMaterial({color})
+            const cube = new THREE.Mesh(geometry,material)
+            cube.position.x = x
+            this.add(cube)
+            return cube
         },
         // 增加光源
         addLight() {
-            const light = new THREE.AmbientLight(0xffffff, 0.5)
+            const color = 0xFFFFFF;
+            const intensity = 1;
             // 平行光源
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(200, 600, 200);
-            this.add(directionalLight);
-            this.add(light)
+            const DirectLight = new THREE.DirectionalLight(color, intensity);
+            DirectLight.position.set(-1, 2, 4);
+            this.add(DirectLight);
         },
         // 渲染
         render(){
             this.renderer.render(SCENE, this.camera);
-            mesh.rotation.x += 0.01;
-            mesh.rotation.y += 0.01;
+            cubes.forEach((cube)=>{
+                cube.rotation.x += 0.01
+                cube.rotation.y += 0.01
+            })
             requestAnimationFrame(this.render);
         }
 
