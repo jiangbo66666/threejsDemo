@@ -5,10 +5,16 @@
   </template>
   
   <script>
+    // three功能模块
     import * as THREE from "three"
+
+    // 鼠标控制器
+    // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
     // scene, mesh，cubes 不做代理（不放在this中，不让vue监听），否则会报错
     const SCENE = new THREE.Scene()
     let cubes = []
+    const spread = 15
 
   export default {
     name: 'threeDemo',
@@ -42,6 +48,10 @@
             // 设置相机的位置
             this.camera.position.set( 50, 50, 50)
             this.add(this.camera)
+            const width =10;
+            const height = 10;
+            const depth = 10;
+            this.addSolidGeometry(-2, -2, new THREE.BoxGeometry(width, height, depth));
 
             // 创建自定义的方形和材质
             const geometry = new THREE.BoxGeometry(10,10,10)
@@ -58,12 +68,43 @@
             this.renderer = new THREE.WebGLRenderer({
                 antialias: true
             })
+
             this.renderer.setClearColor(new THREE.Color('#F5F5DC'), 1);
+            // 设置渲染页面的颗粒度，设置成和页面相同的像素。
             this.renderer.setSize(this.width, this.height);
             console.log(document.getElementById("three"))
             
             container.appendChild(this.renderer.domElement);
             this.render();
+        },
+        addObject( x, y, obj) {
+            obj.position.x = x * spread;
+            obj.position.y = y * spread;
+            SCENE.add(obj);
+        },
+        // 设置材质
+        createMaterial() {
+            const material =new THREE.MeshPhongMaterial({
+                side: THREE.DoubleSide
+            })
+            // 设置随机色彩 色彩盘
+            const hue = Math.random()
+            const saturation = 1
+            const luminance = .5
+            // hue 色彩 saturation 饱和度 luminance 亮度
+            material.color.setHSL( hue, saturation, luminance)
+            return material
+        },
+        // 设置实体几何图形
+        addSolidGeometry(x, y, geometry) {
+            const mesh = new THREE.Mesh(geometry, this.createMaterial());
+            this.addObject(x, y, mesh);
+        },
+        // 设置线型几何体（字体）
+        addLineGeometry(x, y, geometry) {
+            const material = new THREE.LineBasicMaterial({color: 0x000000});
+            const mesh = new THREE.LineSegments(geometry, material);
+            this.addObject(x, y, mesh);
         },
         add(obj) {
             SCENE.add(obj)
