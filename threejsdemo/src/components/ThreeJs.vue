@@ -53,13 +53,26 @@
             const depth = 10;
             this.addSolidGeometry(-2, -2, new THREE.BoxGeometry(width, height, depth));
 
+            const radius = 7;
+            const widthSegments = 12;
+            const heightSegments = 8;
+            const pointGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
+            // 点型材质
+            const material = new THREE.PointsMaterial({
+                color: 'red',
+                size: 1,
+            });
+            const points = new THREE.Points(pointGeometry, material);
+            SCENE.add(points);
+
             // 创建自定义的方形和材质
-            const geometry = new THREE.BoxGeometry(10,10,10)
-            cubes = [
-                this.addCubeMesh( geometry, 0x44aa88, 20),
-                this.addCubeMesh( geometry, 0x8844aa, 0),
-                this.addCubeMesh( geometry, 0xaa8844, -20),
-            ]
+            // const geometry = new THREE.BoxGeometry(10,10,10)
+            // cubes = [
+            //     this.addCubeMesh( geometry, 0x44aa88, 20),
+            //     this.addCubeMesh( geometry, 0x8844aa, 0),
+            //     this.addCubeMesh( geometry, 0xaa8844, -20),
+            // ]
+            cubes = []
             // 指定相机看向的方位
             this.camera.lookAt(0,0,0);
             this.addLight()
