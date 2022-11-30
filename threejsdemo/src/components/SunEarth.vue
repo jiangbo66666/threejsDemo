@@ -51,7 +51,7 @@ export default {
       });
       // 创建地月系统
       const earthSystem = new THREE.Object3D();
-      earthSystem.position.x = 10
+      earthSystem.position.x = 20
       spheres.push(earthSystem);
       solarSystem.add(earthSystem)
       // 创建月球系统，将月球系统放入地月系统中
@@ -95,13 +95,13 @@ export default {
 
       container.appendChild(this.renderer.domElement);
       // 辅助轴创建方法
-      spheres.forEach((node) => {
-        // 创建辅助轴x (红色) 和 z (蓝色) y (绿色)
-        const axes = new THREE.AxesHelper();
-        axes.material.depthTest = false;
-        axes.renderOrder = 1;
-        node.add(axes);
-      });
+      // spheres.forEach((node) => {
+      //   // 创建辅助轴x (红色) 和 z (蓝色) y (绿色)
+      //   const axes = new THREE.AxesHelper();
+      //   axes.material.depthTest = false;
+      //   axes.renderOrder = 1;
+      //   node.add(axes);
+      // });
       this.render()
     },
     // 渲染
