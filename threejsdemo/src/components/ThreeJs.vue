@@ -1,7 +1,7 @@
 <template>
 	<div class="three" id="three" ref="three">
-
 	</div>
+	zhelima
 </template>
   
 <script>

@@ -3,6 +3,7 @@
   <div>
    <div @click="saveWorld">存储为world</div>
    <div class="echarst" ref="echarst"></div>
+    <div @click="toWx">访问小程序</div>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import JSZipUtils from 'jszip-utils'
 import ImageModule from 'docxtemplater-image-module-free'
 import {saveAs} from 'file-saver'
 import * as echarts from 'echarts'
+
 
 function base64DataURLToArrayBuffer(dataURL) {
   const base64Regex = /^data:image\/(png|jpg|svg|svg\+xml);base64,/;
@@ -51,6 +53,10 @@ export default {
   computed: {},
   watch: {},
   methods: {
+    toWx () {
+      // alipays://platformapi/startapp?pages/credit-parking/index&isvAppid=2021002145668322
+      window.location.href = `https://ds.alipay.com/?scheme=` + encodeURIComponent("alipays://platformapi/startapp?appId=2021002145668322&page=pages/personalCenter/insensibilityPay")
+    },
     initEcharst () {
       var myEcharts = echarts.init(this.$refs.echarst)
       myEcharts.setOption({
